@@ -1,5 +1,5 @@
-const Doctor = require("../../models/Doctor");
-const AppError = require("../../utils/appError");
+const Doctor = require("../../src/models/Doctor");
+const AppError = require("../../src/utils/appError");
 
 const getDoctors = async (req, res, next) => {
     try {

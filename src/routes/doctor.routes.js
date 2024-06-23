@@ -1,5 +1,5 @@
 const Router = require('express')
-const { getDoctors, addDoctor, deleteDoctor, updateDoctor } = require('../controllers/doctors')
+const { getDoctors, addDoctor, deleteDoctor, updateDoctor } = require('../../controllers/doctors')
 const router = Router();
 
 router.get('/', getDoctors)
