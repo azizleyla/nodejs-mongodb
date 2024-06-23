@@ -1,30 +1,24 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const { router } = require('./routes/doctor.routes');
-const app = express();
+require("dotenv").config()
 
+const express = require('express');
+const { router } = require('./routes/doctor.routes');
+const connectDB = require('./db/connect');
+const app = express();
 
 app.use(express.json());
 
+app.use("/api/v1/doctors", router)
 
-const uri = "mongodb+srv://leyla_aziz:Rewnyc1402!@cluster0.qmczpbb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const port = process.env.PORT || 8000;
 
-async function connect() {
+const start = async () => {
     try {
-        await mongoose.connect(uri);
-        console.log("connected to MongoDB");
-    }
-    catch (error) {
-        console.log(error);
+        await connectDB(process.env.MONGO_URL);
+        app.listen(port, () => {
+            console.log("server started on port 8000");
+        });
+    } catch (err) {
+        console.log(err);
     }
 }
-
-connect();
-
-app.use("/api/doctors", router)
-
-
-
-app.listen(8000, () => {
-    console.log("server started on port 8000");
-});
+start()

@@ -1,5 +1,5 @@
-const Doctor = require("../../src/models/Doctor");
-const AppError = require("../../src/utils/appError");
+const Doctor = require("../../models/Doctor");
+const AppError = require("../../utils/appError");
 
 const getDoctors = async (req, res, next) => {
     try {
@@ -7,7 +7,7 @@ const getDoctors = async (req, res, next) => {
         return res.status(200).json({
             status: "success",
             data: doctors
-            
+
         });
     } catch (err) {
         next(err)
