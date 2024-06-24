@@ -5,8 +5,8 @@ const {
     deleteDoctor,
     updateDoctor,
 } = require("../controllers/doctors");
-const { authentification } = require("../middleware/authentification");
-const { authorization } = require("../middleware/authorization");
+const { authentification } = require("../../middleware/authentification");
+const { authorization } = require("../../middleware/authorization");
 const { checkIsAuth } = require("../utils/helpers");
 const doctorRouter = Router();
 
