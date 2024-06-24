@@ -1,12 +1,22 @@
-const Router = require('express')
-const { getDoctors, addDoctor, deleteDoctor, updateDoctor } = require('../controllers/doctors')
-const router = Router();
+const Router = require("express");
+const {
+    getDoctors,
+    addDoctor,
+    deleteDoctor,
+    updateDoctor,
+} = require("../controllers/doctors");
+const { authentification } = require("../middleware/authentification");
+const { authorization } = require("../middleware/authorization");
+const { checkIsAuth } = require("../utils/helpers");
+const doctorRouter = Router();
 
-router.get('/', getDoctors)
-router.post('/add', addDoctor)
-router.delete('/delete/:id', deleteDoctor)
-router.put('/update/:id', updateDoctor);
+doctorRouter.get(
+    "/",
+    checkIsAuth(['admin']),
+    getDoctors,
+);
+doctorRouter.post("/add", addDoctor);
+doctorRouter.delete("/delete/:id", deleteDoctor);
+doctorRouter.put("/update/:id", updateDoctor);
 
-module.exports = {
-    router: router
-}
+module.exports = doctorRouter;

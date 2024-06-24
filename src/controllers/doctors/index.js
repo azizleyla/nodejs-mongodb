@@ -1,25 +1,27 @@
+const { Error } = require("mongoose");
 const Doctor = require("../../models/Doctor");
 const AppError = require("../../utils/appError");
+const appSuccess = require("../../utils/appSuccess");
 
 const getDoctors = async (req, res, next) => {
     try {
         const doctors = await Doctor.find();
-        return res.status(200).json({
-            status: "success",
-            data: doctors
+        appSuccess(res, doctors)
 
-        });
     } catch (err) {
         next(err)
     }
 };
 
 const addDoctor = async (req, res, next) => {
-    const doctor = await Doctor.create(req.body);
-    res.status(201).json({
-        status: "success",
-        data: doctor
-    });
+    try {
+        const doctor = await Doctor.create(req.body);
+        appSuccess(res, doctor, 'Doctor created succesfully')
+
+    } catch (err) {
+        next(Error)
+    }
+
 };
 
 const deleteDoctor = async (req, res, next) => {
@@ -30,10 +32,9 @@ const deleteDoctor = async (req, res, next) => {
         if (!doctor) {
             return next(new AppError(404, "Doctor with that id not found"));
         }
-        return res.status(204).json({
-            status: 'success',
-            data: null,
-        });
+        appSuccess(res, doctor, 'Doctor deleted succesfully')
+
+
     } catch (err) {
         next(err)
     }
@@ -47,10 +48,8 @@ const updateDoctor = async (req, res, next) => {
         if (!doctor) {
             return next(new AppError(404, "Doctor with that id not found"));
         }
-        return res.status(201).json({
-            status: 'success',
-            data: doctor
-        });
+        appSuccess(res, doctor, 'Doctor updated succesfully')
+
 
     } catch (err) {
         next(err)

@@ -1,14 +1,15 @@
 require("dotenv").config()
 
 const express = require('express');
-const { router } = require('./routes/doctor.routes');
 const connectDB = require('./db/connect');
+const doctorRouter = require("./routes/doctor.routes");
+const { userRouter } = require("./routes/user.routes");
 const app = express();
 
 app.use(express.json());
 
-app.use("/api/v1/doctors", router)
-
+app.use("/api/v1/doctors", doctorRouter)
+app.use("/api/v1/auth", userRouter)
 const port = process.env.PORT || 8000;
 
 const start = async () => {
