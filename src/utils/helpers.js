@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const { authentification } = require('../../middleware/authentification');
+const { authentification } = require('../middleware/authentification');
 const User = require('../models/User');
 
 require("dotenv").config()
@@ -26,7 +26,7 @@ const checkIsAuth = (roles) => {
         authentification,
         async (req, res, next) => {
             const user = await User.findOne({ _id: req[" currentUser"].id });
-
+            console.log(user)
             if (roles && !roles.includes(user.role)) {
                 return res.status(403).json({ error: "Forbidden" });
             }

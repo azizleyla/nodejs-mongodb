@@ -3,6 +3,7 @@ const Doctor = require("../../models/Doctor");
 const AppError = require("../../utils/appError");
 const appSuccess = require("../../utils/appSuccess");
 
+
 const getDoctors = async (req, res, next) => {
     try {
         const doctors = await Doctor.find();
@@ -19,7 +20,7 @@ const addDoctor = async (req, res, next) => {
         appSuccess(res, doctor, 'Doctor created succesfully')
 
     } catch (err) {
-        next(Error)
+        next(err)
     }
 
 };

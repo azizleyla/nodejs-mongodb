@@ -1,14 +1,12 @@
 const Router = require('express')
 const { signUpUser, loginUser, getProfile } = require('../controllers/users');
-const { authentification } = require('../../middleware/authentification');
-const { authorization } = require('../../middleware/authorization');
+const { checkIsAuth } = require('../utils/helpers');
 
 const userRouter = Router();
 
 userRouter.post('/signup', signUpUser)
 userRouter.post('/login', loginUser)
-userRouter.get('/profile', authentification,
-    authorization(['admin', 'doctor']),
+userRouter.get('/profile', checkIsAuth(['admin', 'doctor']),
     getProfile
 )
 

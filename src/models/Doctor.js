@@ -24,6 +24,10 @@ const doctorSchema = new Schema({
         required: [true, "Please provide position "],
 
     },
+    img_path: {
+        type: String,
+
+    },
     bio: {
         type: String
     }

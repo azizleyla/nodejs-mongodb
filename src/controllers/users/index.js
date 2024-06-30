@@ -66,7 +66,7 @@ const loginUser = async (req, res, next) => {
 const getProfile = async (req, res) => {
   try {
     if (!req[" currentUser"]) {
-      return res.status(401).json("UnAuth");
+      return res.status(401).json("UnAuthorized");
     }
 
     const user = await User.findOne({ _id: req[" currentUser"].id });

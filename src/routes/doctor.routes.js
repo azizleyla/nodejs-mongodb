@@ -5,17 +5,20 @@ const {
     deleteDoctor,
     updateDoctor,
 } = require("../controllers/doctors");
-const { authentification } = require("../../middleware/authentification");
-const { authorization } = require("../../middleware/authorization");
 const { checkIsAuth } = require("../utils/helpers");
+const multer = require('multer');
+const upload = multer();
+
 const doctorRouter = Router();
 
 doctorRouter.get(
     "/",
-    checkIsAuth(['admin']),
+    checkIsAuth(['admin', 'doctor']),
     getDoctors,
 );
-doctorRouter.post("/add", addDoctor);
+
+
+doctorRouter.post("/add", upload.none(), addDoctor);
 doctorRouter.delete("/delete/:id", deleteDoctor);
 doctorRouter.put("/update/:id", updateDoctor);
 
