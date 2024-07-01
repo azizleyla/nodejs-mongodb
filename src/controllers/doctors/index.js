@@ -56,8 +56,23 @@ const updateDoctor = async (req, res, next) => {
         next(err)
     }
 }
+
+const getDoctorById = async (req, res, next) => {
+    try {
+        const doctorId = req.params.id;
+        const doctor = await Doctor.findById(doctorId)
+        if (!doctor) {
+            return next(new AppError(404, "Doctor with that id not found"));
+
+        }
+        appSuccess(res, doctor)
+    } catch (err) {
+        next(err)
+    }
+}
 module.exports = {
     getDoctors,
+    getDoctorById,
     addDoctor,
     deleteDoctor,
     updateDoctor
