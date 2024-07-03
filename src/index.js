@@ -12,6 +12,8 @@ app.use(cors())
 
 app.use("/api/v1/doctors", doctorRouter)
 app.use("/api/v1/auth", userRouter)
+app.use("/uploads", express.static("uploads"));
+
 const port = process.env.PORT || 8000;
 
 const start = async () => {

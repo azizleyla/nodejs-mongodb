@@ -17,7 +17,8 @@ const doctorSchema = new Schema({
     },
     email: {
         type: String,
-        default: Date.now
+        default: Date.now,
+        
     },
     position: {
         type: String,

@@ -7,8 +7,8 @@ const {
     getDoctorById,
 } = require("../controllers/doctors");
 const { checkIsAuth } = require("../utils/helpers");
-const multer = require('multer');
-const upload = multer();
+const { upload } = require("../middleware/image");
+
 
 const doctorRouter = Router();
 
@@ -18,8 +18,8 @@ doctorRouter.get(
     getDoctors,
 );
 doctorRouter.get("/doctor/:id", checkIsAuth(['admin', 'doctor']), getDoctorById);
-doctorRouter.post("/add", upload.none(), addDoctor);
+doctorRouter.post("/add", upload.single('img_path'), addDoctor);
 doctorRouter.delete("/delete/:id", deleteDoctor);
-doctorRouter.put("/update/:id", updateDoctor);
+doctorRouter.put("/update/:id", upload.single('img_path'), updateDoctor);
 
 module.exports = doctorRouter;

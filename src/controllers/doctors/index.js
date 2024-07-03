@@ -29,6 +29,7 @@ const deleteDoctor = async (req, res, next) => {
     try {
         const doctorId = req.params.id;
         // Find the doctor by ID and delete it
+
         const doctor = await Doctor.findByIdAndDelete(doctorId)
         if (!doctor) {
             return next(new AppError(404, "Doctor with that id not found"));
@@ -45,7 +46,15 @@ const deleteDoctor = async (req, res, next) => {
 const updateDoctor = async (req, res, next) => {
     try {
         const doctorId = req.params.id;
-        const doctor = await Doctor.findByIdAndUpdate(doctorId, req.body, { new: true });
+        const doctorUpdate = { ...req.body }; // Copy req.body to avoid direct mutation
+        if (req.file) {
+            // Assuming you are storing the file path in img_path
+            doctorUpdate.img_path = req.file.path; // Adjust as per your file storage setup
+        }
+
+        const doctor = await Doctor.findByIdAndUpdate(doctorId, doctorUpdate, { new: true });
+        const updateResult = await Doctor.updateMany({}, { $set: { img_path: req.file.path } });
+        console.log(req.file)
         if (!doctor) {
             return next(new AppError(404, "Doctor with that id not found"));
         }
