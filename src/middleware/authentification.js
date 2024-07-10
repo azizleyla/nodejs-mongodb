@@ -16,7 +16,7 @@ const authentification = (
     if (!token) {
         return res.status(401).json({ message: "Unauthorized" });
     }
-    const decode = jwt.verify(token, process.env.JWT_SECRET);
+    const decode = jwt.verify(token, `${process.env.JWT_SECRET_KEY}`);
     if (!decode) {
         return res.status(401).json({ message: "Unauthorized" });
     }

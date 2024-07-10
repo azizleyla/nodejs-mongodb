@@ -18,7 +18,8 @@ const port = process.env.PORT || 8000;
 
 const start = async () => {
     try {
-        await connectDB(process.env.MONGO_URL);
+        await connectDB('mongodb+srv://leyla_aziz:Rewnyc1402!@cluster0.qmczpbb.mongodb.net/appointment-system?retryWrites=true&w=majority&appName=Cluster0');
+
         app.listen(port, () => {
             console.log("server started on port 8000");
         });

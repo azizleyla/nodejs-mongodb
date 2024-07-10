@@ -18,7 +18,7 @@ const doctorSchema = new Schema({
     email: {
         type: String,
         default: Date.now,
-        
+
     },
     position: {
         type: String,
@@ -31,6 +31,15 @@ const doctorSchema = new Schema({
     },
     bio: {
         type: String
+    },
+    phone: {
+        type: String,
+        required: [true, "Please provide Phone Number "],
+
+    },
+    social_media: {
+        insta_link: String,
+        fb_link: String
     }
 });
 

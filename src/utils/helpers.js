@@ -16,9 +16,10 @@ class encrypt {
     }
 
     static generateToken(payload) {
-        return jwt.sign(payload, JWT_SECRET, { expiresIn: "1d" });
+        return jwt.sign(payload, `${process.env.JWT_SECRET_KEY}`, { expiresIn: "90d" });
     }
 }
+
 
 
 const checkIsAuth = (roles) => {
@@ -26,7 +27,7 @@ const checkIsAuth = (roles) => {
         authentification,
         async (req, res, next) => {
             const user = await User.findOne({ _id: req[" currentUser"].id });
-            if (roles && !roles.includes(user.role)) {
+            if (roles && !roles.includes(user?.role)) {
                 return res.status(403).json({ error: "Forbidden" });
             }
             next();
@@ -34,10 +35,17 @@ const checkIsAuth = (roles) => {
     ];
 };
 
+const parseSocialMedia = (data) => {
+    if (typeof data === 'string') {
+        return JSON.parse(data);
+    }
+    return data;
+};
 
 module.exports = {
     encrypt,
-    checkIsAuth
+    checkIsAuth,
+    parseSocialMedia
 }
 
 
