@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { parseSocialMedia } = require('../utils/helpers');
 const Schema = mongoose.Schema;
 
 // create schema
@@ -42,5 +43,10 @@ const doctorSchema = new Schema({
         fb_link: String
     }
 });
+
+doctorSchema.pre('save', function (next) {
+    this.social_media = parseSocialMedia(this.social_media)
+    next()
+})
 
 module.exports = mongoose.model('Doctor', doctorSchema)

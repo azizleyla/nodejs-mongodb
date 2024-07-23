@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const { authentification } = require('../middleware/authentification');
 const User = require('../models/User');
 
 require("dotenv").config()
@@ -16,7 +15,7 @@ class encrypt {
     }
 
     static generateToken(payload) {
-        return jwt.sign(payload, `${process.env.JWT_SECRET_KEY}`, { expiresIn: "90d" });
+        return jwt.sign(payload, `${process.env.JWT_SECRET_KEY}`, { expiresIn: "10d" });
     }
 }
 

@@ -1,7 +1,43 @@
 const User = require("../../models/User");
+const jwt = require('jsonwebtoken');
 
 const AppError = require("../../utils/appError");
 const { encrypt } = require("../../utils/helpers");
+require("dotenv").config()
+
+
+const checkAuth = () => {
+  return async (req, res, next) => {
+    const header = req.headers.authorization;
+    const token = header?.split(" ")[1];
+    try {
+      if (token) {
+        const allowedRoles = ['doctor', 'admin']
+        const decode = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        req[" currentUser"] = decode;
+        const user = await User.findOne({ _id: req[" currentUser"].id });
+        if (!allowedRoles.includes(user?.role)) {
+          return next(new AppError("Tələb olunan icazəniz yoxdur.", 403));
+        }
+        next()
+      } else {
+        return next(new AppError('Token gonderilmeyib'))
+
+      }
+
+    } catch (err) {
+      if (err instanceof jwt.TokenExpiredError) {
+        return next(new AppError('Sessiya başa çatdı', 401))
+
+      }
+      return next(new AppError(err?.message, err.status))
+
+
+    }
+  }
+};
+
+
 
 const signUpUser = async (req, res, next) => {
   try {
@@ -94,5 +130,6 @@ const getProfile = async (req, res) => {
 module.exports = {
   signUpUser,
   loginUser,
+  checkAuth,
   getProfile,
 };

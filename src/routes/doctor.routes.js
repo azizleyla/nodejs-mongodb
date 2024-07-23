@@ -6,20 +6,20 @@ const {
     updateDoctor,
     getDoctorById,
 } = require("../controllers/doctors");
-const { checkIsAuth } = require("../utils/helpers");
 const { upload } = require("../middleware/image");
+const { checkAuth } = require("../controllers/users");
 
 
 const doctorRouter = Router();
 
 doctorRouter.get(
     "/",
-    checkIsAuth(['admin', 'doctor']),
+    checkAuth(),
     getDoctors,
 );
-doctorRouter.get("/doctor/:id", checkIsAuth(['admin', 'doctor']), getDoctorById);
-doctorRouter.post("/add", upload.single('img_path'), addDoctor);
-doctorRouter.delete("/delete/:id", deleteDoctor);
-doctorRouter.put("/update/:id", upload.single('img_path'), updateDoctor);
+doctorRouter.get("/doctor/:id", checkAuth(), getDoctorById);
+doctorRouter.post("/add", checkAuth(), upload.single('img_path'), addDoctor);
+doctorRouter.delete("/delete/:id", checkAuth(), deleteDoctor);
+doctorRouter.put("/update/:id", checkAuth(), upload.single('img_path'), updateDoctor);
 
 module.exports = doctorRouter;
