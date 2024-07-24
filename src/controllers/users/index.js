@@ -3,39 +3,36 @@ const jwt = require('jsonwebtoken');
 
 const AppError = require("../../utils/appError");
 const { encrypt } = require("../../utils/helpers");
+const { catchAsync } = require("../../utils/catchAsync.");
 require("dotenv").config()
 
 
-const checkAuth = () => {
-  return async (req, res, next) => {
+const checkAuth = () =>
+  catchAsync(async (req, res, next) => {
     const header = req.headers.authorization;
     const token = header?.split(" ")[1];
     try {
       if (token) {
-        const allowedRoles = ['doctor', 'admin']
+        const allowedRoles = ['doctor', 'admin'];
         const decode = jwt.verify(token, process.env.JWT_SECRET_KEY);
         req[" currentUser"] = decode;
+        console.log(req)
         const user = await User.findOne({ _id: req[" currentUser"].id });
         if (!allowedRoles.includes(user?.role)) {
           return next(new AppError("Tələb olunan icazəniz yoxdur.", 403));
         }
-        next()
+        next();
       } else {
-        return next(new AppError('Token gonderilmeyib'))
-
+        return next(new AppError('Token göndərilməyib'));
       }
-
     } catch (err) {
+      console.log(err)
       if (err instanceof jwt.TokenExpiredError) {
-        return next(new AppError('Sessiya başa çatdı', 401))
-
+        return next(new AppError('Sessiya başa çatdı. Zəhmət olmasa yenidən daxil olun', 401));
       }
-      return next(new AppError(err?.message, err.status))
-
-
+      return next(new AppError(err?.message, err.status));
     }
-  }
-};
+  });
 
 
 
@@ -102,7 +99,7 @@ const loginUser = async (req, res, next) => {
 const getProfile = async (req, res) => {
   try {
     if (!req[" currentUser"]) {
-      return res.status(401).json("UnAuthorized");
+      return res.status(401).json("Unauthorized");
     }
 
     const user = await User.findOne({ _id: req[" currentUser"].id });

@@ -15,7 +15,7 @@ class encrypt {
     }
 
     static generateToken(payload) {
-        return jwt.sign(payload, `${process.env.JWT_SECRET_KEY}`, { expiresIn: "10d" });
+        return jwt.sign(payload, `${process.env.JWT_SECRET_KEY}`, { expiresIn: "5s" });
     }
 }
 

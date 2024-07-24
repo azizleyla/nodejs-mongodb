@@ -7,18 +7,22 @@ const { errorHandler } = require("./utils/errorHandler");
 const xss = require("xss-clean");
 const doctorRouter = require("./routes/doctor.routes");
 const { userRouter } = require("./routes/user.routes");
+const bodyParser = require('body-parser')
 
 const app = express();
 
-app.use(express.json());
+app.use(bodyParser.json())
+
+// app.use(express.json());
 app.use(xss())
 app.use(cors())
-app.use(errorHandler)
 
 
 app.use("/api/v1/doctors", doctorRouter)
 app.use("/api/v1/auth", userRouter)
 app.use("/uploads", express.static("uploads"));
+
+
 
 const port = process.env.PORT || 8000;
 
@@ -34,3 +38,6 @@ const start = async () => {
     }
 }
 start()
+
+app.use(errorHandler)
+
